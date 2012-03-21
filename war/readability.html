@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<TITLE>Readability Scores Demo</TITLE>
+<LINK REL="StyleSheet" HREF="css/style.css" TYPE="text/css" MEDIA="screen">
+<SCRIPT TYPE="text/javascript" SRC="http://www.json.org/json.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" SRC="js/updateScores.js"></SCRIPT>
+
+</HEAD>
+<BODY ONLOAD="refreshScore()">
+<DIV ID="inhalt">
+<CENTER>
+<H2>Readability Metrics Demo</H2>
+
+See the <a href="readability-api.html">API documentation</a>.
+
+<TABLE>
+	<TR>
+		<TD ROWSPAN="15">
+		<FORM ACTION=""><TEXTAREA NAME="text" COLS="60" ROWS="13"
+			ONKEYUP="refreshScore()">
+The word logorrhoea is often used pejoratively 
+to describe prose that is highly abstract and 
+contains little concrete language. Since abstract 
+writing is hard to visualize, it often seems as though 
+it makes no sense and all the words are excessive. 
+Writers in academic fields that concern themselves mostly 
+with the abstract, such as philosophy and especially 
+postmodernism, often fail to include extensive concrete 
+examples of their ideas, and so a superficial examination 
+of their work might lead one to believe that it is all nonsense.
+</TEXTAREA></FORM>
+		</TD>
+	</TR>
+	<TR>
+		<TD>Sentences</TD>
+		<TD><SPAN ID="sentences"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD>Words</TD>
+		<TD><SPAN ID="words"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD>Characters</TD>
+		<TD><SPAN ID="characters"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD>Syllables</TD>
+		<TD><SPAN ID="syllables"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD>Complex words</TD>
+		<TD><SPAN ID="complex"></SPAN></TD>
+	</TR>
+
+	<TR>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+	</TR>
+
+	<TR>
+		<TD><A
+			HREF="http://en.wikipedia.org/wiki/Automated_Readability_Index">Automated
+		Readability Index</A></TD>
+		<TD><SPAN ID="ari"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A HREF="http://en.wikipedia.org/wiki/SMOG">SMOG</A></TD>
+		<TD><SPAN ID="smog"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A HREF="http://en.wikipedia.org/wiki/SMOG">SMOG Index</A></TD>
+		<TD><SPAN ID="smogindex"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A
+			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_Grade_Level#Flesch.E2.80.93Kincaid_Grade_Level">Flesch–Kincaid
+		Grade Level</A></TD>
+		<TD><SPAN ID="fleschkincaid"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A
+			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_test#Flesch_Reading_Ease">Flesch
+		Reading Ease</A></TD>
+		<TD><SPAN ID="flesch"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A HREF="http://en.wikipedia.org/wiki/Coleman-Liau_Index">Coleman-Liau
+		Index</A></TD>
+		<TD><SPAN ID="colemanliau"></SPAN></TD>
+	</TR>
+	<TR>
+		<TD><A HREF="http://en.wikipedia.org/wiki/Gunning-Fog_Index">Gunning-Fog
+		Index</A></TD>
+		<TD><SPAN ID="gunningfog"></SPAN></TD>
+	</TR>
+
+</TABLE>
+
+
+
+
+<P>For any bug reports or feature requests, contact <A
+	HREF="http://www.stern.nyu.edu/~panos">Panos Ipeirotis</A>.<BR>
+The code is available at <A
+	HREF="http://code.google.com/p/panos-ipeirotis/">Google Code</A>.<BR>
+<IMG
+	SRC="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
+	ALT="Powered by Google App Engine" /></P>
+</CENTER>
+</DIV>
+</BODY>
+</HTML>

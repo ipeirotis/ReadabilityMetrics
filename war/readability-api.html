@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+<TITLE>Readability Scores Demo</TITLE>
+<LINK REL="StyleSheet" HREF="css/style.css" TYPE="text/css" MEDIA="screen">
+<SCRIPT TYPE="text/javascript" SRC="http://www.json.org/json.js"></SCRIPT>
+<SCRIPT TYPE="text/javascript" SRC="js/updateScores.js"></SCRIPT>
+<link href="css/prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/prettify.js"></script>
+
+
+</HEAD>
+<BODY ONLOAD="refreshScore()">
+<DIV ID="inhalt">
+<CENTER>
+<H2>Readability Metrics API</H2>
+</center>
+
+This API can be used to compute a set of readability metrics. It is
+RESTful web service and can be called either through a <i>GET</i> or
+through a <i>POST</i> call. (The latter is recommended for longer
+texts.)
+<p>The API requests should point to the URL <a
+	href="http://ipeirotis.appspot.com/readability/GetReadabilityScores">http://ipeirotis.appspot.com/readability/GetReadabilityScores</a>.
+It requires the following parameters.
+<h3>Parameters</h3>
+<ul>
+	<li><b>text</b>: The text for which we want to compute the
+	readability scores.</li>
+	<li><b>format</b>: Specifies the output format of the call. It can
+	be either <i>json</i> or <i>txt</i>.</li>
+	<ul>
+		<li>If the call specifies <b>format=json</b> then no additional
+		parameter is needed. The call returns a JSON object with all the
+		metrics for the passed text.
+		<li>If the call specifies <b>format=txt</b> then the call needs
+		to specify the <b>metric</b> that should be returned.</li>
+	</ul>
+	<li><b>metric</b>: Specifies the readability metric to return,
+	when the call specifies <b>format=txt</b>. The metric can take one of
+	the following values:
+	<ul>
+
+		<li><i>ARI</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/Automated_Readability_Index">Automated
+		Readability Index</A></li>
+		<li><i>ColemanLiau</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/Coleman-Liau_Index">Coleman-Liau
+		Index</A></li>
+		<li><i>FleschKincaid</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_Grade_Level#Flesch.E2.80.93Kincaid_Grade_Level">Flesch–Kincaid
+		Grade Level</A></li>
+		<li><i>FleschReading</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_test#Flesch_Reading_Ease">Flesch
+		Reading Ease</A></li>
+		<li><i>GunningFog</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/Gunning-Fog_Index">Gunning-Fog
+		Index</A></li>
+		<li><i>SMOG</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/SMOG">SMOG</A> score</li>
+		<li><i>SMOGIndex</i>: Returns the <A
+			HREF="http://en.wikipedia.org/wiki/SMOG">SMOG Index</A></li>
+	</ul>
+</ul>
+
+<h3>Examples</h3>
+
+<b>Call</b>: A JSON call for the text <i>I do not like them in a
+box. I do not like them with a fox.</i>
+<ul>
+	<li><b>URL</b>: <pre class=prettyprint>
+<a href="http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=json&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox.">http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=json&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox.</a>
+</pre>
+	<li><b>Result</b>: <pre class=prettyprint>{"characters":42,"words":16,"sentences":2,"syllables":16,"complexwords":0,
+"ari":-5.066,"colemanliau":-3.339,"fleschkincaid":-0.67,"fleschreading":114.115,
+"gunningfog":3.2,"smog":3.129,"smogindex":3.0}</pre>
+</ul>
+<p><b>Call</b>: A call to return in txt format the SMOG score for
+for the text <i>I do not like them in a box. I do not like them with
+a fox.</i>
+<ul>
+
+	<li><b>URL</b>: <pre class=prettyprint>
+<a href="http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=txt&metric=SMOG&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox."></a>http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=txt&metric=SMOG&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox.</a>
+</pre>
+	<li><b>Result</b>: <pre class=prettyprint>3.129</pre>
+</ul>
+<hr>
+
+<P>For any bug reports or feature requests, contact <A
+	HREF="http://www.stern.nyu.edu/~panos">Panos Ipeirotis</A>.<BR>
+The code is available at <A
+	HREF="http://code.google.com/p/panos-ipeirotis/">Google Code</A>.<BR>
+<IMG
+	SRC="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
+	ALT="Powered by Google App Engine" /></P>
+</CENTER>
+</DIV>
+</BODY>
+</HTML>
