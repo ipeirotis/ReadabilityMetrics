@@ -1,6 +1,6 @@
 package com.ipeirotis.readability;
 
-class BagOfReadabilityObjects {
+public class BagOfReadabilityObjects {
 	private Integer characters;
 
 	private Integer words;
