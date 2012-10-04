@@ -63,8 +63,7 @@ public class ReadabilityService {
 			Entity textEntity = dataStore.get(textStoreKey);
 			text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
 		} catch (EntityNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "No text found with id: "+id;
 		}		
 		return text;
 	}
