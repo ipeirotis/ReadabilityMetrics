@@ -6,7 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,6 +29,7 @@ import com.ipeirotis.readability.Readability;
  * @author TimoT
  *
  */
+@Path("/")
 public class ReadabilityService {
 
 	private static final String TEXT_STORE = "READABILITY_TEXT_STORE";
@@ -52,8 +53,8 @@ public class ReadabilityService {
 	 */
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	@Path("/getText")
-	public String getText(@QueryParam("text_id") Long id) {
+	@Path("/getText/{id}")
+	public String getText(@PathParam("id") Long id) {
 		DatastoreService dataStore =
                 DatastoreServiceFactory.getDatastoreService();
 		String text = null;
@@ -74,7 +75,7 @@ public class ReadabilityService {
 	 * @return key as long.
 	 */
 	@POST
-    @Consumes("application/xml")
+	@Consumes("application/xml")
 	@Produces(MediaType.TEXT_PLAIN)
     @Path("/insertText")
 	public Long insertText(String text) {
@@ -91,10 +92,10 @@ public class ReadabilityService {
 	 * @return
 	 */
 	@PUT
-    @Consumes("application/xml")
+	@Consumes("application/xml")
 	@Produces(MediaType.TEXT_PLAIN)
-    @Path("/updateText")
-	public Boolean updateText(Long textId, String text) {
+    @Path("/updateText/{id}")
+	public Boolean updateText(@PathParam("id") Long textId, String text) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 		Entity textEntity = new Entity(textStoreKey);
@@ -110,8 +111,8 @@ public class ReadabilityService {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-    @Path("/getMetrics")
-	public BagOfReadabilityObjects getMetrics(@QueryParam("text_id") Long textId) {
+    @Path("/getMetrics/{id}")
+	public BagOfReadabilityObjects getMetrics(@PathParam("id") Long textId) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		try {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
@@ -132,9 +133,9 @@ public class ReadabilityService {
 	 */
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-    @Path("/getOneMetric")
-	public Double getMetric(@QueryParam("text_id") Long textId, 
-			@QueryParam("metric_type") Integer type) {
+    @Path("/getOneMetric/{id}/{metric_type}")
+	public Double getMetric(@PathParam("id") Long textId, 
+			@PathParam("metric_type") MetricType type) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Double value = null;
 		
@@ -142,7 +143,8 @@ public class ReadabilityService {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
 			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
-			Readability read = new Readability(text);			
+			Readability read = new Readability(text);
+			
 			if(type.equals(MetricType.ARI)) {
 				value = read.getARI();
 			} 
@@ -161,6 +163,9 @@ public class ReadabilityService {
 			else if(type.equals(MetricType.SMOG)) {
 				value = read.getSMOG();
 			} 			
+			else if(type.equals(MetricType.SMOG_INDEX)) {
+				value = read.getSMOGIndex();
+			}
 		} catch (EntityNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,8 +178,8 @@ public class ReadabilityService {
 	 * @param textId
 	 */
     @DELETE
-    @Path("/deleteText")
-    public void deleteText(@QueryParam("text_id") Long textId) {
+    @Path("/deleteText/{id}")
+    public void deleteText(@PathParam("id") Long textId) {
     	DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     	Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
     	dataStore.delete(textStoreKey);
