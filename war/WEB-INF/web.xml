@@ -12,6 +12,20 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CheckForAds</servlet-name>
 		<servlet-class>com.ipeirotis.ads.CheckForAdsServlet</servlet-class>
 	</servlet>
+	<servlet>
+	<servlet-name>Readability REST Application</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.ipeirotis.rest.readability</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+	        <servlet-name>Readability REST Application</servlet-name>
+	        <url-pattern>/readability/rest/*</url-pattern>
+    </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GetReadabilityScore</servlet-name>
 		<url-pattern>/readability/GetReadabilityScores</url-pattern>
