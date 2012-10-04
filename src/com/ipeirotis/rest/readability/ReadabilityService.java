@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+//import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.Response.Status;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -75,7 +75,7 @@ public class ReadabilityService {
 	 * @return key as long.
 	 */
 	@POST
-	@Consumes("application/xml")
+	@Consumes("text/plain")
 	@Produces(MediaType.TEXT_PLAIN)
     @Path("/insertText")
 	public Long insertText(String text) {
@@ -92,7 +92,7 @@ public class ReadabilityService {
 	 * @return
 	 */
 	@PUT
-	@Consumes("application/xml")
+	@Consumes("text/plain")
 	@Produces(MediaType.TEXT_PLAIN)
     @Path("/updateText/{id}")
 	public Boolean updateText(@PathParam("id") Long textId, String text) {
