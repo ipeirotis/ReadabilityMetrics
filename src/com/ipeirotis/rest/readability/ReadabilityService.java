@@ -63,6 +63,7 @@ public class ReadabilityService {
 			Entity textEntity = dataStore.get(textStoreKey);
 			text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
 		} catch (EntityNotFoundException e) {
+			System.err.println("Entity not found with id: "+id);
 			return "No text found with id: "+id;
 		}		
 		return text;
@@ -119,7 +120,7 @@ public class ReadabilityService {
 			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
 			return new Readability(text).getMetrics();
 		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
+			System.err.println("Entity not found: "+e.getMessage());
 		}		
 		return null;
 	}
@@ -165,9 +166,11 @@ public class ReadabilityService {
 			else if(type.equals(MetricType.SMOG_INDEX)) {
 				value = read.getSMOGIndex();
 			}
+			else {
+				System.err.println("Unknown metric type: "+type.toString());
+			}
 		} catch (EntityNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Entity not found: "+e.getMessage());
 		}		
 		return value;
 	}
