@@ -77,8 +77,7 @@ public class ReadabilityService {
 		try {
 			StringBuffer buffer = new StringBuffer();
 			Entity textEntity = dataStore.get(textStoreKey);
-			Date d = new Date(Long.parseLong(
-					(String) textEntity.getProperty(TEXT_STORE_TIMESTAMP)));
+			Date d = new Date((Long) textEntity.getProperty(TEXT_STORE_TIMESTAMP));
 			buffer.append("Timestamp: "+d.toString());
 			buffer.append("<br>");
 			buffer.append("Text: ");
