@@ -41,7 +41,7 @@ public class ReadabilityService {
 
 	//datastore for storing calculated metrics.
 	private static final String METRICS_STORE = "READABILITY_METRICS";
-	private static final String METRICS_STORE_TEXT_ID = "text_id";
+	private static final String METRICS_STORE_TIMESTAMP = "timestamp";
 	private static final String METRICS_STORE_ARI = "ari";
 	private static final String METRICS_STORE_SMOG = "smog"; 
 	private static final String METRICS_STORE_FLESCH_READING = "flesch_reading";
@@ -49,8 +49,6 @@ public class ReadabilityService {
 	private static final String METRICS_STORE_GUNNING_FOG = "gunning_fog";
 	private static final String METRICS_STORE_COLEMAN_LIAU = "coleman_liau";
 	private static final String METRICS_STORE_SMOG_INDEX = "smog_index";
-	private static final String METRICS_STORE_TIMESTAMP = "timestamp";
-	
 	/**
 	 * Test method.
 	 * @return
@@ -139,53 +137,115 @@ public class ReadabilityService {
 	public Response getMetrics(@PathParam("id") Long textId) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		try {
+			//get text from text store
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
 			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT);
-			BagOfReadabilityObjects metrics = new Readability(text).getMetrics();
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("<table border='1'>");
-			buffer.append("<tr>");
-			buffer.append("<td>ARI</td><td>");			
-			buffer.append(metrics.getARI());
-			buffer.append("</td></tr>");			
-			
-			buffer.append("<tr>");
-			buffer.append("<td>Coleman Liau</td><td>");			
-			buffer.append(metrics.getColemanLiau());
-			buffer.append("</td></tr>");			
+			Long timestamp = (Long) textEntity.getProperty(TEXT_STORE_TIMESTAMP);			
+			Date textStoreDate = new Date(timestamp);
 
-			buffer.append("<tr>");
-			buffer.append("<td>Flesch Kincaid</td><td>");			
-			buffer.append(metrics.getFleschKincaid());
-			buffer.append("</td></tr>");			
-
-			buffer.append("<tr>");
-			buffer.append("<td>Flesch Reading</td><td>");			
-			buffer.append(metrics.getFleschReading());
-			buffer.append("</td></tr>");
-			
-			buffer.append("<tr>");
-			buffer.append("<td>Cunning Frog</td><td>");			
-			buffer.append(metrics.getGunningFog());
-			buffer.append("</td></tr>");			
-			
-			buffer.append("<tr>");
-			buffer.append("<td>SMOG</td><td>");			
-			buffer.append(metrics.getSMOG());
-			buffer.append("</td></tr>");			
-
-			buffer.append("<tr>");
-			buffer.append("<td>SMOG Index</td><td>");			
-			buffer.append(metrics.getSMOGIndex());
-			buffer.append("</td></tr>");			
-			buffer.append("</table>");
-			String result = createHTML(buffer.toString());
+			//get possible metrics from metric store.
+			Key metricStoreKey = KeyFactory.createKey(METRICS_STORE, textId);
+			Entity metricEntity = null;
+			Date metricDate = null;
+			try {
+				metricEntity = dataStore.get(metricStoreKey);				
+				metricDate = new Date((Long) metricEntity.getProperty(METRICS_STORE_TIMESTAMP));
+			} catch (EntityNotFoundException e) {
+				//not found.
+			}	
+			String result = null;
+			//text is new or metrics are outdated.
+			BagOfReadabilityObjects metrics = null;
+			if(metricEntity == null || metricDate.before(textStoreDate)) {
+				metrics = new Readability(text).getMetrics();				
+				//store metrics
+				metricEntity = new Entity(metricStoreKey);				
+				metricEntity.setProperty(METRICS_STORE_SMOG, metrics.getSMOG());
+				metricEntity.setProperty(METRICS_STORE_FLESCH_READING, metrics.getFleschReading());
+				metricEntity.setProperty(METRICS_STORE_FLESCH_KINCAID, metrics.getFleschKincaid());
+				metricEntity.setProperty(METRICS_STORE_ARI, metrics.getARI());
+				metricEntity.setProperty(METRICS_STORE_GUNNING_FOG, metrics.getGunningFog());
+				metricEntity.setProperty(METRICS_STORE_COLEMAN_LIAU, metrics.getColemanLiau());
+				metricEntity.setProperty(METRICS_STORE_SMOG_INDEX, metrics.getSMOGIndex());
+				
+				metricEntity.setProperty(METRICS_STORE_TIMESTAMP, 
+						(Long) System.currentTimeMillis());
+				dataStore.put(metricEntity);
+				metricDate = new Date((Long) metricEntity.getProperty(METRICS_STORE_TIMESTAMP));
+			}
+			else {//return stored metrics.
+				metrics = new BagOfReadabilityObjects();
+				metrics.setSMOG((Double) metricEntity.getProperty(METRICS_STORE_SMOG));
+				metrics.setFleschReading((Double) 
+						metricEntity.getProperty(METRICS_STORE_FLESCH_READING));
+				metrics.setFleschKincaid((Double) 
+						metricEntity.getProperty(METRICS_STORE_FLESCH_KINCAID));
+				metrics.setARI((Double) metricEntity.getProperty(METRICS_STORE_ARI));
+				metrics.setGunningFog((Double) 
+						metricEntity.getProperty(METRICS_STORE_GUNNING_FOG));
+				metrics.setColemanLiau((Double) 
+						metricEntity.getProperty(METRICS_STORE_COLEMAN_LIAU));
+				metrics.setSMOGIndex((Double) 
+						metricEntity.getProperty(METRICS_STORE_SMOG_INDEX));
+			}
+			result = createMetricTable(metricDate, metrics);
 			return Response.status(Status.OK).entity(result).build();
 		} catch (EntityNotFoundException e) {
 			return Response.status(Status.NOT_FOUND).
 				entity(createHTML("Text not found with id: "+textId)).build();
 		}		
+	}
+	
+	/**
+	 * Create html table with metrics.
+	 * @param date
+	 * @param metrics
+	 * @return
+	 */
+	private String createMetricTable(Date date, BagOfReadabilityObjects metrics) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("<table border='1'>");
+		buffer.append("<tr>");
+		buffer.append("<td>Metrics timestamp</td><td>");			
+		buffer.append(date.toString());
+		buffer.append("</td></tr>");			
+		buffer.append("<tr>");
+		buffer.append("<td>ARI</td><td>");			
+		buffer.append(metrics.getARI());
+		buffer.append("</td></tr>");			
+		
+		buffer.append("<tr>");
+		buffer.append("<td>Coleman Liau</td><td>");			
+		buffer.append(metrics.getColemanLiau());
+		buffer.append("</td></tr>");			
+
+		buffer.append("<tr>");
+		buffer.append("<td>Flesch Kincaid</td><td>");			
+		buffer.append(metrics.getFleschKincaid());
+		buffer.append("</td></tr>");			
+
+		buffer.append("<tr>");
+		buffer.append("<td>Flesch Reading</td><td>");			
+		buffer.append(metrics.getFleschReading());
+		buffer.append("</td></tr>");
+		
+		buffer.append("<tr>");
+		buffer.append("<td>Cunning Frog</td><td>");			
+		buffer.append(metrics.getGunningFog());
+		buffer.append("</td></tr>");			
+		
+		buffer.append("<tr>");
+		buffer.append("<td>SMOG</td><td>");			
+		buffer.append(metrics.getSMOG());
+		buffer.append("</td></tr>");			
+
+		buffer.append("<tr>");
+		buffer.append("<td>SMOG Index</td><td>");			
+		buffer.append(metrics.getSMOGIndex());
+		buffer.append("</td></tr>");			
+		buffer.append("</table>");
+		return createHTML(buffer.toString());
 	}
 	
 	/**
