@@ -188,7 +188,7 @@ public class ReadabilityService {
 			if(type == null) {				
 				StringBuffer buffer = new StringBuffer();
 				buffer.append("Unknown metric type: ");
-				buffer.append(type);
+				buffer.append(typeString);
 				buffer.append("<BR>");
 				buffer.append("Available types are (in lower- or uppercase): ");
 				buffer.append("SMOG, FLESCH_READING, FLESCH_KINCAID, ARI, ");
