@@ -25,7 +25,7 @@ public class BagOfReadabilityObjects {
 
 	private Double smogindex;
 
-	BagOfReadabilityObjects() {
+	public BagOfReadabilityObjects() {
 		// no-args constructor
 	}
 
