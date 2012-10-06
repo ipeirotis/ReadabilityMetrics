@@ -190,7 +190,7 @@ public class ReadabilityService {
 				buffer.append("Unknown metric type: ");
 				buffer.append(type);
 				buffer.append("<BR>");
-				buffer.append("Available types are: ");
+				buffer.append("Available types are (in lower- or uppercase): ");
 				buffer.append("SMOG, FLESCH_READING, FLESCH_KINCAID, ARI, ");
 				buffer.append("GUNNING_FOG, COLEMAN_LIAU and SMOG_INDEX");
 				buffer.append("<BR>");
@@ -223,7 +223,7 @@ public class ReadabilityService {
 					entity(createHTML("Text not found with id: "+textId)).build();
 		}		
 		return Response.status(Status.OK).
-				entity(createHTML(type.toString()+" value="+value)).build();
+				entity(createHTML(type.toString()+"="+value)).build();
 	}
 	
 	/**
