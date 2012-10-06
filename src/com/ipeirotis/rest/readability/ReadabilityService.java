@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-//import javax.ws.rs.core.Response;
-//import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -40,9 +40,9 @@ public class ReadabilityService {
 	 * @return
 	 */
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
 	public String sayPlainTextHello() {
-	    return "Hello, this is Readability REST project.";
+	    return createHTML("Hello, this is Readability REST project");
 	}
 	
 
@@ -52,9 +52,9 @@ public class ReadabilityService {
 	 * @return
 	 */
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
 	@Path("/getText/{id}")
-	public String getText(@PathParam("id") Long id) {
+	public Response getText(@PathParam("id") Long id) {
 		DatastoreService dataStore =
                 DatastoreServiceFactory.getDatastoreService();
 		String text = null;
@@ -63,10 +63,10 @@ public class ReadabilityService {
 			Entity textEntity = dataStore.get(textStoreKey);
 			text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
 		} catch (EntityNotFoundException e) {
-			System.err.println("Entity not found with id: "+id);
-			return "No text found with id: "+id;
+			String content = createHTML("Text not found with id: "+id);
+			return Response.status(Response.Status.NOT_FOUND).entity(content).build();
 		}		
-		return text;
+		return Response.status(Response.Status.OK).entity(createHTML(text)).build();
 	}
 	
 	/**
@@ -76,14 +76,15 @@ public class ReadabilityService {
 	 */
 	@POST
 	@Consumes("text/plain")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
     @Path("/insertText")
-	public Long insertText(String text) {
+	public Response insertText(String text) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Entity textEntity = new Entity(TEXT_STORE);
 		textEntity.setProperty(TEXT_STORE_TEXT_PROPERTY, text);
 		Key newKey = dataStore.put(textEntity);
-		return newKey.getId();
+		return Response.status(Response.Status.OK).
+				entity(createHTML("ID="+newKey.getId())).build();
 	}
 	
 	/**
@@ -93,15 +94,15 @@ public class ReadabilityService {
 	 */
 	@PUT
 	@Consumes("text/plain")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
     @Path("/updateText/{id}")
-	public Boolean updateText(@PathParam("id") Long textId, String text) {
+	public Response updateText(@PathParam("id") Long textId, String text) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 		Entity textEntity = new Entity(textStoreKey);
 		textEntity.setProperty(TEXT_STORE_TEXT_PROPERTY, text);
 		dataStore.put(textEntity);
-		return true;
+		return Response.status(Response.Status.OK).build();
 	}
 	
 	/**
@@ -110,19 +111,58 @@ public class ReadabilityService {
 	 * @return
 	 */
 	@GET
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_HTML)
     @Path("/getMetrics/{id}")
-	public BagOfReadabilityObjects getMetrics(@PathParam("id") Long textId) {
+	public Response getMetrics(@PathParam("id") Long textId) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		try {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
 			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
-			return new Readability(text).getMetrics();
+			BagOfReadabilityObjects metrics = new Readability(text).getMetrics();
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("<table border='1'>");
+			buffer.append("<tr>");
+			buffer.append("<td>ARI</td><td>");			
+			buffer.append(metrics.getARI());
+			buffer.append("</td></tr>");			
+			
+			buffer.append("<tr>");
+			buffer.append("<td>Coleman Liau</td><td>");			
+			buffer.append(metrics.getColemanLiau());
+			buffer.append("</td></tr>");			
+
+			buffer.append("<tr>");
+			buffer.append("<td>Flesch Kincaid</td><td>");			
+			buffer.append(metrics.getFleschKincaid());
+			buffer.append("</td></tr>");			
+
+			buffer.append("<tr>");
+			buffer.append("<td>Flesch Reading</td><td>");			
+			buffer.append(metrics.getFleschReading());
+			buffer.append("</td></tr>");
+			
+			buffer.append("<tr>");
+			buffer.append("<td>Cunning Frog</td><td>");			
+			buffer.append(metrics.getGunningFog());
+			buffer.append("</td></tr>");			
+			
+			buffer.append("<tr>");
+			buffer.append("<td>SMOG</td><td>");			
+			buffer.append(metrics.getSMOG());
+			buffer.append("</td></tr>");			
+
+			buffer.append("<tr>");
+			buffer.append("<td>SMOG Index</td><td>");			
+			buffer.append(metrics.getSMOGIndex());
+			buffer.append("</td></tr>");			
+			buffer.append("</table>");
+			String result = createHTML(buffer.toString());
+			return Response.status(Status.OK).entity(result).build();
 		} catch (EntityNotFoundException e) {
-			System.err.println("Entity not found: "+e.getMessage());
+			return Response.status(Status.NOT_FOUND).
+				entity(createHTML("Text not found with id: "+textId)).build();
 		}		
-		return null;
 	}
 	
 	/**
@@ -132,20 +172,32 @@ public class ReadabilityService {
 	 * @return value of metric as double
 	 */
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_HTML)
     @Path("/getOneMetric/{id}/{metric_type}")
-	public Double getMetric(@PathParam("id") Long textId, 
-			@PathParam("metric_type") MetricType type) {
+	public Response getMetric(@PathParam("id") Long textId, 
+			@PathParam("metric_type") String typeString) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Double value = null;
-		
+		MetricType type = null;
 		try {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
 			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
 			Readability read = new Readability(text);
-			
-			if(type.equals(MetricType.ARI)) {
+			type = MetricType.fromString(typeString);
+			if(type == null) {				
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("Unknown metric type: ");
+				buffer.append(type);
+				buffer.append("<BR>");
+				buffer.append("Available types are: ");
+				buffer.append("SMOG, FLESCH_READING, FLESCH_KINCAID, ARI, ");
+				buffer.append("GUNNING_FOG, COLEMAN_LIAU and SMOG_INDEX");
+				buffer.append("<BR>");
+				return Response.status(Status.NOT_FOUND).
+						entity(createHTML(buffer.toString())).build();				
+			}
+			else if(type.equals(MetricType.ARI)) {
 				value = read.getARI();
 			} 
 			if(type.equals(MetricType.COLEMAN_LIAU)) {
@@ -165,14 +217,13 @@ public class ReadabilityService {
 			} 			
 			else if(type.equals(MetricType.SMOG_INDEX)) {
 				value = read.getSMOGIndex();
-			}
-			else {
-				System.err.println("Unknown metric type: "+type.toString());
-			}
+			}			
 		} catch (EntityNotFoundException e) {
-			System.err.println("Entity not found: "+e.getMessage());
+			return Response.status(Status.NOT_FOUND).
+					entity(createHTML("Text not found with id: "+textId)).build();
 		}		
-		return value;
+		return Response.status(Status.OK).
+				entity(createHTML(type.toString()+" value="+value)).build();
 	}
 	
 	/**
@@ -180,10 +231,33 @@ public class ReadabilityService {
 	 * @param textId
 	 */
     @DELETE
+    @Produces(MediaType.TEXT_HTML)
     @Path("/deleteText/{id}")
-    public void deleteText(@PathParam("id") Long textId) {
+    public Response deleteText(@PathParam("id") Long textId) {
     	DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     	Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
-    	dataStore.delete(textStoreKey);
+    	try {
+			dataStore.get(textStoreKey);
+	        dataStore.delete(textStoreKey);   		
+		} catch (EntityNotFoundException e) {
+			return Response.status(Status.NOT_FOUND).
+					entity(createHTML("Text not found with id: "+textId)).build();
+		}
+    	return Response.status(Status.OK).build();    
+     }
+    
+    /**
+     * Helper method to create HTML.
+     * @param content
+     * @return
+     */
+    private String createHTML(String content) {
+    	StringBuffer buffer = new StringBuffer();
+    	buffer.append("<HTML>");
+    	buffer.append("<BODY>");
+    	buffer.append(content);
+    	buffer.append("</BODY>");
+    	buffer.append("</HTML>");
+    	return buffer.toString();
     }
 }
