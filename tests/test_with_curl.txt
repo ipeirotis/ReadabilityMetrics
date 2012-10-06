@@ -22,7 +22,7 @@ curl -i -X PUT -H 'Content-Type: text/plain' -d "This is an updated text for Rea
 
 5. Testing delete:
 
-curl -i -X DELETE http://localhost:8888/readability/rest/deleleText/<id>
+curl -i -X DELETE http://localhost:8888/readability/rest/deleteText/<id>
 
 6. Testing all metrics:
 
