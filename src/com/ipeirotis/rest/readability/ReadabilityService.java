@@ -1,5 +1,7 @@
 package com.ipeirotis.rest.readability;
 
+import java.util.Date;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,8 +34,22 @@ import com.ipeirotis.readability.Readability;
 @Path("/")
 public class ReadabilityService {
 
+	//datastore for storing text.
 	private static final String TEXT_STORE = "READABILITY_TEXT_STORE";
-	private static final String TEXT_STORE_TEXT_PROPERTY = "text";
+	private static final String TEXT_STORE_TEXT = "text";
+	private static final String TEXT_STORE_TIMESTAMP = "timestamp";
+
+	//datastore for storing calculated metrics.
+	private static final String METRICS_STORE = "READABILITY_METRICS";
+	private static final String METRICS_STORE_TEXT_ID = "text_id";
+	private static final String METRICS_STORE_ARI = "ari";
+	private static final String METRICS_STORE_SMOG = "smog"; 
+	private static final String METRICS_STORE_FLESCH_READING = "flesch_reading";
+	private static final String METRICS_STORE_FLESCH_KINCAID = "flesch_kincaid";
+	private static final String METRICS_STORE_GUNNING_FOG = "gunning_fog";
+	private static final String METRICS_STORE_COLEMAN_LIAU = "coleman_liau";
+	private static final String METRICS_STORE_SMOG_INDEX = "smog_index";
+	private static final String METRICS_STORE_TIMESTAMP = "timestamp";
 	
 	/**
 	 * Test method.
@@ -57,16 +73,22 @@ public class ReadabilityService {
 	public Response getText(@PathParam("id") Long id) {
 		DatastoreService dataStore =
                 DatastoreServiceFactory.getDatastoreService();
-		String text = null;
 		Key textStoreKey = KeyFactory.createKey(TEXT_STORE, id);
 		try {
+			StringBuffer buffer = new StringBuffer();
 			Entity textEntity = dataStore.get(textStoreKey);
-			text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
+			Date d = new Date(Long.parseLong(
+					(String) textEntity.getProperty(TEXT_STORE_TIMESTAMP)));
+			buffer.append("Timestamp: "+d.toString());
+			buffer.append("<br>");
+			buffer.append("Text: ");
+			buffer.append((String) textEntity.getProperty(TEXT_STORE_TEXT));
+			return Response.status(Response.Status.OK).entity(
+					createHTML(buffer.toString())).build();
 		} catch (EntityNotFoundException e) {
 			String content = createHTML("Text not found with id: "+id);
 			return Response.status(Response.Status.NOT_FOUND).entity(content).build();
 		}		
-		return Response.status(Response.Status.OK).entity(createHTML(text)).build();
 	}
 	
 	/**
@@ -81,7 +103,8 @@ public class ReadabilityService {
 	public Response insertText(String text) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Entity textEntity = new Entity(TEXT_STORE);
-		textEntity.setProperty(TEXT_STORE_TEXT_PROPERTY, text);
+		textEntity.setProperty(TEXT_STORE_TEXT, text);
+		textEntity.setProperty(TEXT_STORE_TIMESTAMP, System.currentTimeMillis());
 		Key newKey = dataStore.put(textEntity);
 		return Response.status(Response.Status.OK).
 				entity(createHTML("ID="+newKey.getId())).build();
@@ -100,7 +123,8 @@ public class ReadabilityService {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 		Entity textEntity = new Entity(textStoreKey);
-		textEntity.setProperty(TEXT_STORE_TEXT_PROPERTY, text);
+		textEntity.setProperty(TEXT_STORE_TEXT, text);
+		textEntity.setProperty(TEXT_STORE_TIMESTAMP, System.currentTimeMillis());
 		dataStore.put(textEntity);
 		return Response.status(Response.Status.OK).build();
 	}
@@ -118,7 +142,7 @@ public class ReadabilityService {
 		try {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
-			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
+			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT);
 			BagOfReadabilityObjects metrics = new Readability(text).getMetrics();
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("<table border='1'>");
@@ -182,7 +206,7 @@ public class ReadabilityService {
 		try {
 			Key textStoreKey = KeyFactory.createKey(TEXT_STORE, textId);
 			Entity textEntity = dataStore.get(textStoreKey);
-			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT_PROPERTY);
+			String text = (String) textEntity.getProperty(TEXT_STORE_TEXT);
 			Readability read = new Readability(text);
 			type = MetricType.fromString(typeString);
 			if(type == null) {				
