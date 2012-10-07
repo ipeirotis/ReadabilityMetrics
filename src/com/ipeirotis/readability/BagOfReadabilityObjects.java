@@ -1,6 +1,9 @@
 package com.ipeirotis.readability;
 
-public class BagOfReadabilityObjects {
+public class BagOfReadabilityObjects {	
+	
+	private Long timestamp;
+	
 	private Integer characters;
 
 	private Integer words;
@@ -123,5 +126,13 @@ public class BagOfReadabilityObjects {
 
 	public void setSMOGIndex(Double smogindex) {
 		this.smogindex = smogindex;
+	}
+
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 }
