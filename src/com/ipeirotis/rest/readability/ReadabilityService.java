@@ -127,14 +127,45 @@ public class ReadabilityService {
 	}
 	
 	/**
-	 * Get all metrics for stored text in the database.
+	 * Get metrics as HTML table.
 	 * @param textId
 	 * @return
 	 */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-    @Path("/getMetrics/{id}")
-	public Response getMetrics(@PathParam("id") Long textId) {
+    @Path("/getHtmlMetrics/{id}")
+	public Response getHtmlMetrics(@PathParam("id") Long textId) {
+		BagOfReadabilityObjects metrics = getMetrics(textId);
+		if(metrics != null) {			
+			String result = createMetricTable(metrics);
+			return Response.status(Status.OK).entity(result).build();
+		}
+		else {
+			return Response.status(Status.NOT_FOUND).
+					entity(createHTML("Text not found with id: "+textId)).build();
+		}
+	}
+	
+	/**
+	 * Get metrics as JSON object. Not yet implemented.
+	 * @param textId
+	 * @return
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/getJsonMetrics/{id}")
+	public BagOfReadabilityObjects getJsonMetrics(@PathParam("id") Long textId) {
+		BagOfReadabilityObjects metrics = getMetrics(textId);
+		return metrics;
+	}
+	
+	/**
+	 * Get metrics either from datastore or calculate metrics for new or
+	 * update texts.
+	 * @param textId
+	 * @return
+	 */
+	private BagOfReadabilityObjects getMetrics(Long textId) {
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		try {
 			//get text from text store
@@ -154,7 +185,7 @@ public class ReadabilityService {
 			} catch (EntityNotFoundException e) {
 				//not found.
 			}	
-			String result = null;
+			
 			//text is new or metrics are outdated.
 			BagOfReadabilityObjects metrics = null;
 			if(metricEntity == null || metricDate.before(textStoreDate)) {
@@ -189,26 +220,25 @@ public class ReadabilityService {
 				metrics.setSMOGIndex((Double) 
 						metricEntity.getProperty(METRICS_STORE_SMOG_INDEX));
 			}
-			result = createMetricTable(metricDate, metrics);
-			return Response.status(Status.OK).entity(result).build();
+			metrics.setTimestamp(metricDate.getTime());
+			return metrics;
 		} catch (EntityNotFoundException e) {
-			return Response.status(Status.NOT_FOUND).
-				entity(createHTML("Text not found with id: "+textId)).build();
+			return null;
 		}		
 	}
-	
+		
 	/**
 	 * Create html table with metrics.
 	 * @param date
 	 * @param metrics
 	 * @return
 	 */
-	private String createMetricTable(Date date, BagOfReadabilityObjects metrics) {
+	private String createMetricTable(BagOfReadabilityObjects metrics) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("<table border='1'>");
 		buffer.append("<tr>");
 		buffer.append("<td>Metrics timestamp</td><td>");			
-		buffer.append(date.toString());
+		buffer.append(new Date(metrics.getTimestamp()).toString());
 		buffer.append("</td></tr>");			
 		buffer.append("<tr>");
 		buffer.append("<td>ARI</td><td>");			
