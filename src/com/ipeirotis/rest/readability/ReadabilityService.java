@@ -318,7 +318,7 @@ public class ReadabilityService {
 			else if(type.equals(MetricType.ARI)) {
 				value = read.getARI();
 			} 
-			if(type.equals(MetricType.COLEMAN_LIAU)) {
+			else if(type.equals(MetricType.COLEMAN_LIAU)) {
 				value = read.getColemanLiau();
 			} 
 			else if(type.equals(MetricType.FLESCH_KINCAID)) {
