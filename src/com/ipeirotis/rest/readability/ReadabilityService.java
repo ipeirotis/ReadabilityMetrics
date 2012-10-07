@@ -147,7 +147,7 @@ public class ReadabilityService {
 	}
 	
 	/**
-	 * Get metrics as JSON object. Not yet implemented.
+	 * Get metrics as JSON object.
 	 * @param textId
 	 * @return
 	 */
@@ -156,7 +156,12 @@ public class ReadabilityService {
     @Path("/getJsonMetrics/{id}")
 	public BagOfReadabilityObjects getJsonMetrics(@PathParam("id") Long textId) {
 		BagOfReadabilityObjects metrics = getMetrics(textId);
-		return metrics;
+		if(metrics != null) {
+			return metrics;			
+		}
+		else {
+			return new BagOfReadabilityObjects();//return empty object, null is not allowed.
+		}
 	}
 	
 	/**

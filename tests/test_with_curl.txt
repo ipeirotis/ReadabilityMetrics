@@ -30,7 +30,7 @@ curl -i -X GET http://localhost:8888/readability/rest/getHtmlMetrics/<id>/
 
 7. Testing all metrics in JSON:
 
-Not yet completed.
+curl -i -X GET http://localhost:8888/readability/rest/getJsonMetrics/<id>/
 
 8. Testing a metric, metric could be either in lower- or uppercase.
 
