@@ -19,6 +19,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 			<param-name>com.sun.jersey.config.property.packages</param-name>
 			<param-value>com.ipeirotis.rest.readability</param-value>
 		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
