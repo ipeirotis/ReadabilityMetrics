@@ -20,19 +20,21 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
-	<servlet-mapping>
-	        <servlet-name>Readability REST Application</servlet-name>
-	        <url-pattern>/readability/*</url-pattern>
-    </servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>GetReadabilityScore</servlet-name>
-		<url-pattern>/readability/GetReadabilityScores</url-pattern>
-	</servlet-mapping>
+
 	<servlet-mapping>
 		<servlet-name>CheckForAds</servlet-name>
 		<url-pattern>/ads/CheckForAds</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetReadabilityScore</servlet-name>
+		<url-pattern>/readability/GetReadabilityScores</url-pattern>
+	</servlet-mapping>	
+	<servlet-mapping>
+	        <servlet-name>Readability REST Application</servlet-name>
+	        <url-pattern>/readability/*</url-pattern>
+    </servlet-mapping>
+
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

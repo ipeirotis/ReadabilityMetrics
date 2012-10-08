@@ -15,8 +15,8 @@
 <H2>Readability Metrics API</H2>
 </center>
 
-This API can be used to compute a set of readability metrics. It is
-RESTful web service and can be called either through a <i>GET</i> or
+This API can be used to compute a set of readability metrics. It 
+can be called either through a <i>GET</i> or
 through a <i>POST</i> call. (The latter is recommended for longer
 texts.)
 <p>The API requests should point to the URL <a
@@ -43,21 +43,21 @@ It requires the following parameters.
 		<li><i>ARI</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/Automated_Readability_Index">Automated
 		Readability Index</A></li>
-		<li><i>ColemanLiau</i>: Returns the <A
+		<li><i>Coleman_Liau</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/Coleman-Liau_Index">Coleman-Liau
 		Index</A></li>
-		<li><i>FleschKincaid</i>: Returns the <A
+		<li><i>Flesch_Kincaid</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_Grade_Level#Flesch.E2.80.93Kincaid_Grade_Level">Flesch–Kincaid
 		Grade Level</A></li>
-		<li><i>FleschReading</i>: Returns the <A
+		<li><i>Flesch_Reading</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_test#Flesch_Reading_Ease">Flesch
 		Reading Ease</A></li>
-		<li><i>GunningFog</i>: Returns the <A
+		<li><i>Gunning_Fog</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/Gunning-Fog_Index">Gunning-Fog
 		Index</A></li>
 		<li><i>SMOG</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/SMOG">SMOG</A> score</li>
-		<li><i>SMOGIndex</i>: Returns the <A
+		<li><i>SMOG_Index</i>: Returns the <A
 			HREF="http://en.wikipedia.org/wiki/SMOG">SMOG Index</A></li>
 	</ul>
 </ul>
@@ -70,9 +70,9 @@ box. I do not like them with a fox.</i>
 	<li><b>URL</b>: <pre class=prettyprint>
 <a href="http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=json&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox.">http://ipeirotis.appspot.com/readability/GetReadabilityScores?format=json&text=I%20do%20not%20like%20them%20in%20a%20box.%20I%20do%20not%20like%20them%20with%20a%20fox.</a>
 </pre>
-	<li><b>Result</b>: <pre class=prettyprint>{"characters":42,"words":16,"sentences":2,"syllables":16,"complexwords":0,
-"ari":-5.066,"colemanliau":-3.339,"fleschkincaid":-0.67,"fleschreading":114.115,
-"gunningfog":3.2,"smog":3.129,"smogindex":3.0}</pre>
+	<li><b>Result</b>: <pre class=prettyprint>{"results":{"COLEMAN_LIAU":13.746,"SMOG_INDEX":14.402,"COMPLEXWORDS":13.0,
+	"SYLLABLES":144.0,"CHARACTERS":446.0,"GUNNING_FOG":17.2,"SENTENCES":3.0,
+	"ARI":17.33,"FLESCH_READING":15.348,"FLESCH_KINCAID":15.348,"WORDS":86.0,"SMOG":15.021}}</pre>
 </ul>
 <p><b>Call</b>: A call to return in txt format the SMOG score for
 for the text <i>I do not like them in a box. I do not like them with
@@ -89,7 +89,7 @@ a fox.</i>
 <P>For any bug reports or feature requests, contact <A
 	HREF="http://www.stern.nyu.edu/~panos">Panos Ipeirotis</A>.<BR>
 The code is available at <A
-	HREF="http://code.google.com/p/panos-ipeirotis/">Google Code</A>.<BR>
+	HREF="https://github.com/ipeirotis/ReadabilityMetrics">Github</A>.<BR>
 <IMG
 	SRC="http://code.google.com/appengine/images/appengine-noborder-120x30.gif"
 	ALT="Powered by Google App Engine" /></P>

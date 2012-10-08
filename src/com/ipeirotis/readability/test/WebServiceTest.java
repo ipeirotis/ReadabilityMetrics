@@ -1,6 +1,6 @@
 package com.ipeirotis.readability.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;

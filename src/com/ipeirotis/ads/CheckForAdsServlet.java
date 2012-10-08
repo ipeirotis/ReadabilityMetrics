@@ -20,10 +20,12 @@ public class CheckForAdsServlet extends HttpServlet {
 	
 	private HttpServletResponse r;
 
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		doPost(req, resp);
 	}
 
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
 		this.r = resp;

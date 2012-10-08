@@ -3,8 +3,11 @@ package com.ipeirotis.readability;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.ipeirotis.readability.entities.MetricType;
 
+@XmlRootElement
 public class BagOfReadabilityObjects {	
 
 	private Map<MetricType, Double> results = new HashMap<MetricType, Double>();

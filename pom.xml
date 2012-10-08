@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ipeirotis.readability</groupId>
+  <groupId>ReadabilityMetrics</groupId>
   <artifactId>ReadabilityMetrics</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
@@ -21,20 +21,8 @@
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
-      </plugin>
+      </plugin>      
     </plugins>
   </build>
-  <dependencies>
-  	<dependency>
-  		<groupId>com.sun.jersey</groupId>
-  		<artifactId>jersey-bundle</artifactId>
-  		<version>1.14</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>com.google.code.gson</groupId>
-  		<artifactId>gson</artifactId>
-  		<version>2.2.2</version>
-  	</dependency>
-  </dependencies>
   <packaging>war</packaging>
 </project>

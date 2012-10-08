@@ -223,6 +223,7 @@ public class Utilities {
 			builder.setErrorHandler(new org.xml.sax.ErrorHandler() {
 
 				// ignore fatal errors (an exception is guaranteed)
+				@Override
 				public void fatalError(SAXParseException exception) {
 
 					System.out.println("** Error" + ", line " + exception.getLineNumber() + ", uri " + exception.getSystemId());
@@ -230,6 +231,7 @@ public class Utilities {
 				}
 
 				// treat validation errors as fatal
+				@Override
 				public void error(SAXParseException e) throws SAXParseException {
 
 					System.out.println("** Error" + ", line " + e.getLineNumber() + ", uri " + e.getSystemId());
@@ -238,6 +240,7 @@ public class Utilities {
 				}
 
 				// dump warnings too
+				@Override
 				public void warning(SAXParseException err) {
 
 					System.out.println("** Warning" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
@@ -291,6 +294,7 @@ public class Utilities {
 			builder.setErrorHandler(new org.xml.sax.ErrorHandler() {
 
 				// ignore fatal errors (an exception is guaranteed)
+				@Override
 				public void fatalError(SAXParseException exception) {
 
 					System.out.println("** Error" + ", line " + exception.getLineNumber() + ", uri " + exception.getSystemId());
@@ -298,6 +302,7 @@ public class Utilities {
 				}
 
 				// treat validation errors as fatal
+				@Override
 				public void error(SAXParseException e) throws SAXParseException {
 
 					System.out.println("** Error" + ", line " + e.getLineNumber() + ", uri " + e.getSystemId());
@@ -306,6 +311,7 @@ public class Utilities {
 				}
 
 				// dump warnings too
+				@Override
 				public void warning(SAXParseException err) {
 
 					System.out.println("** Warning" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());

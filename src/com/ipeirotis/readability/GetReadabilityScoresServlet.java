@@ -14,10 +14,12 @@ public class GetReadabilityScoresServlet extends HttpServlet {
 
 	private HttpServletResponse r;
 
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		doPost(req, resp);
 	}
 
+	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
 		try {
@@ -42,9 +44,6 @@ public class GetReadabilityScoresServlet extends HttpServlet {
 				Gson gson = new Gson();
 				String json = gson.toJson(read.getMetrics());
 				print(json);
-				return;
-			} else if (output.equals("xml")) {
-				resp.setContentType("text/xml");
 				return;
 			}
 

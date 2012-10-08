@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lingpipe-4.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/google-gson-2.2.2/gson-2.2.2.jar" sourcepath="lib/google-gson-2.2.2/gson-2.2.2-sources.jar">
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar" sourcepath="lib/google-gson-2.2.2/gson-2.2.2-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/ReadabilityMetrics/lib/google-gson-2.2.2/gson-2.2.2-javadoc.jar!/"/>
 		</attributes>
@@ -15,6 +10,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-bundle-1.14.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
