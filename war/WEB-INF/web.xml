@@ -12,7 +12,7 @@
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.ipeirotis.rest.readability</param-value>
+			<param-value>com.ipeirotis.readability.rest</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
@@ -23,7 +23,7 @@
 	
 	<servlet-mapping>
 	        <servlet-name>Readability REST Application</servlet-name>
-	        <url-pattern>/readability/rest/*</url-pattern>
+	        <url-pattern>/readability/*</url-pattern>
     </servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GetReadabilityScore</servlet-name>

@@ -1,5 +1,7 @@
 package com.ipeirotis.readability;
 
+import com.ipeirotis.readability.entities.MetricType;
+
 /**
  * Implements various readability indexes
  * 
@@ -20,23 +22,56 @@ public class Readability {
 
 	Integer characters;
 
-	public Integer getCharacters() {
+	public double getMetric(MetricType t) throws IllegalArgumentException {
+		
+		switch (t) {
+			case SMOG: 
+				return getSMOG();
+			case FLESCH_READING: 
+				return getFleschKincaidGradeLevel();
+			case FLESCH_KINCAID: 
+				return getFleschKincaidGradeLevel(); 
+			case ARI: 
+				return getARI();
+			case GUNNING_FOG: 
+				return getGunningFog();
+			case COLEMAN_LIAU: 
+				return getColemanLiau();
+			case SMOG_INDEX: 
+				return getSMOGIndex();
+			case CHARACTERS: 
+				return getCharacters();
+			case SYLLABLES: 
+				return getSyllables();
+			case WORDS: 
+				return getWords();
+			case COMPLEXWORDS: 
+				return getComplex();
+			case SENTENCES: 
+				return getSentences();
+				
+			default:
+				throw new IllegalArgumentException("Readability Metric '"+t.toString()+"' not supported");
+		}
+	}
+	
+	private int getCharacters() {
 		return characters;
 	}
 
-	public Integer getComplex() {
+	private int getComplex() {
 		return complex;
 	}
 
-	public Integer getSentences() {
+	private int getSentences() {
 		return sentences;
 	}
 
-	public Integer getSyllables() {
+	private int getSyllables() {
 		return syllables;
 	}
 
-	public Integer getWords() {
+	private int getWords() {
 		return words;
 	}
 
@@ -57,22 +92,7 @@ public class Readability {
 	 * @return The readability metrics in a single object.
 	 */
 	public BagOfReadabilityObjects getMetrics() {
-		BagOfReadabilityObjects bo = new BagOfReadabilityObjects();
-
-		bo.setARI(this.getARI());
-		bo.setCharacters(this.getCharacters());
-		bo.setColemanLiau(this.getColemanLiau());
-		bo.setComplexwords(this.getComplex());
-		bo.setFleschKincaid(this.getFleschKincaidGradeLevel());
-		bo.setFleschReading(this.getFleschReadingEase());
-		bo.setGunningFog(this.getGunningFog());
-		bo.setSentences(this.getSentences());
-		bo.setSMOG(this.getSMOG());
-		bo.setSMOGIndex(this.getSMOGIndex());
-		bo.setSyllables(this.getSyllables());
-		bo.setWords(this.getWords());
-
-		return bo;
+		return new BagOfReadabilityObjects(this);
 	}
 
 	/**
@@ -91,11 +111,11 @@ public class Readability {
 	 * 
 	 * @return
 	 */
-	private static Integer getNumberOfCharacters(String text) {
+	private static int getNumberOfCharacters(String text) {
 		String cleanText = Utilities.cleanLine(text);
 		String[] word = cleanText.split(" ");
 
-		Integer characters = 0;
+		int characters = 0;
 		for (String w : word) {
 			characters += w.length();
 		}
@@ -108,7 +128,7 @@ public class Readability {
 	 * @param text
 	 * @return the number of words in the text with 3 or more syllables
 	 */
-	private static Integer getNumberOfComplexWords(String text) {
+	private static int getNumberOfComplexWords(String text) {
 		String cleanText = Utilities.cleanLine(text);
 		String[] words = cleanText.split(" ");
 		int complex = 0;
@@ -119,7 +139,7 @@ public class Readability {
 		return complex;
 	}
 
-	private static Integer getNumberOfWords(String text) {
+	private static int getNumberOfWords(String text) {
 		String cleanText = Utilities.cleanLine(text);
 		String[] word = cleanText.split(" ");
 		int words = 0;
@@ -136,7 +156,7 @@ public class Readability {
 	 * @param text
 	 * @return the total number of syllables in the words of the text
 	 */
-	private static Integer getNumberOfSyllables(String text) {
+	private static int getNumberOfSyllables(String text) {
 		String cleanText = Utilities.cleanLine(text);
 		String[] word = cleanText.split(" ");
 		int syllables = 0;
@@ -148,7 +168,7 @@ public class Readability {
 		return syllables;
 	}
 
-	private static Integer getNumberOfSentences(String text) {
+	private static int getNumberOfSentences(String text) {
 		int l = se.getSentences(text).length;
 		if (l > 0)
 			return l;
@@ -165,7 +185,7 @@ public class Readability {
 	 * @param text
 	 * @return The SMOG index of the text
 	 */
-	public Double getSMOGIndex() {
+	private double getSMOGIndex() {
 		double score = Math.sqrt(complex * (30.0 / sentences)) + 3;
 		return Utilities.round(score, 3);
 	}
@@ -177,7 +197,7 @@ public class Readability {
 	 * @param text
 	 * @return Retugns the SMOG value for the text
 	 */
-	public Double getSMOG() {
+	private double getSMOG() {
 		double score = 1.043 * Math.sqrt(complex * (30.0 / sentences)) + 3.1291;
 		return Utilities.round(score, 3);
 	}
@@ -189,7 +209,7 @@ public class Readability {
 	 * @param text
 	 * @return Returns the Flesch_Reading Ease value for the text
 	 */
-	public Double getFleschReadingEase() {
+	private double getFleschReadingEase() {
 
 		double score = 206.835 - 1.015 * words / sentences - 84.6 * syllables / words;
 
@@ -203,7 +223,7 @@ public class Readability {
 	 * @param text
 	 * @return Returns the Flesch-Kincaid_Readability_Test value for the text
 	 */
-	public Double getFleschKincaidGradeLevel() {
+	private double getFleschKincaidGradeLevel() {
 		double score = 0.39 * words / sentences + 11.8 * syllables / words - 15.59;
 		return Utilities.round(score, 3);
 	}
@@ -215,7 +235,7 @@ public class Readability {
 	 * @param text
 	 * @return the Automated Readability Index for text
 	 */
-	public Double getARI() {
+	private double getARI() {
 		double score = 4.71 * characters / words + 0.5 * words / sentences - 21.43;
 		return Utilities.round(score, 3);
 	}
@@ -227,7 +247,7 @@ public class Readability {
 	 * @param text
 	 * @return the Gunning-Fog Index for text
 	 */
-	public double getGunningFog() {
+	private double getGunningFog() {
 		double score = 0.4 * (words / sentences + 100 * complex / words);
 		return Utilities.round(score, 3);
 	}
@@ -238,7 +258,7 @@ public class Readability {
 	 * 
 	 * @return The Coleman-Liau_Index value for the text
 	 */
-	public Double getColemanLiau() {
+	private double getColemanLiau() {
 		double score = (5.89 * characters / words) - (30 * sentences / words) - 15.8;
 		return Utilities.round(score, 3);
 	}

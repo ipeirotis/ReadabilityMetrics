@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.ipeirotis.readability.entities.MetricType;
 
 @SuppressWarnings("serial")
 public class GetReadabilityScoresServlet extends HttpServlet {
@@ -30,7 +31,7 @@ public class GetReadabilityScoresServlet extends HttpServlet {
 			}
 
 			Readability read = new Readability(text);
-
+ 
 			String output = req.getParameter("format");
 			if (output == null) {
 				resp.setContentType("text/plain");
@@ -53,25 +54,21 @@ public class GetReadabilityScoresServlet extends HttpServlet {
 				print("No metric parameter defined and output is set to txt.");
 				return;
 			}
-			if (metric.equals("SMOGIndex")) {
-				print("" + read.getSMOGIndex());
-			} else if (metric.equals("SMOG")) {
-				print("" + read.getSMOG());
-			} else if (metric.equals("FleschReading")) {
-				print("" + read.getFleschReadingEase());
-			} else if (metric.equals("FleschKincaid")) {
-				print("" + read.getFleschKincaidGradeLevel());
-			} else if (metric.equals("ARI")) {
-				print("" + read.getARI());
-			} else if (metric.equals("GunningFog")) {
-				print("" + read.getGunningFog());
-			} else if (metric.equals("ColemanLiau")) {
-				print("" + read.getColemanLiau());
-			} else {
+			Double v;
+			try {
+				v = read.getMetric(MetricType.fromString(metric));
+			} catch (IllegalArgumentException e) {
 				r.setStatus(500);
-				print("Invalid value for the metric parameter. It should be one of SMOGIndex, SMOG, FleschReading, FleschKincaid, ARI, GunningFog, ColemanLiau");
+				StringBuffer sb = new StringBuffer("Invalid value for the metric parameter. It should be one of: ");
+				for (MetricType m : MetricType.values()) {
+					sb.append(m.name() +", ");
+				}
+				sb.append(" and any other value is invalid.");
+				print( sb.toString() );
 				return;
 			}
+			print(v.toString());
+			
 
 		} catch (com.google.apphosting.api.DeadlineExceededException e) {
 			print("Reached execution time limit.");

@@ -1,138 +1,30 @@
 package com.ipeirotis.readability;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.ipeirotis.readability.entities.MetricType;
+
 public class BagOfReadabilityObjects {	
-	
-	private Long timestamp;
-	
-	private Integer characters;
 
-	private Integer words;
+	private Map<MetricType, Double> results = new HashMap<MetricType, Double>();
 
-	private Integer sentences;
-
-	private Integer syllables;
-
-	private Integer complexwords;
-
-	private Double ari;
-
-	private Double colemanliau;
-
-	private Double fleschkincaid;
-
-	private Double fleschreading;
-
-	private Double gunningfog;
-
-	private Double smog;
-
-	private Double smogindex;
-
+	public BagOfReadabilityObjects(Readability r) {
+		for (MetricType metric : MetricType.values()) {
+			results.put(metric, r.getMetric(metric));
+		}
+	}
+ 
 	public BagOfReadabilityObjects() {
-		// no-args constructor
+		
+	}
+	
+	public void setMetric(MetricType t, Double v) {
+		results.put(t, v);
+	}
+	
+	public Double getMetric(MetricType t) {
+		return results.get(t);
 	}
 
-	public Integer getCharacters() {
-		return characters;
-	}
-
-	public void setCharacters(Integer characters) {
-		this.characters = characters;
-	}
-
-	public Integer getWords() {
-		return words;
-	}
-
-	public void setWords(Integer words) {
-		this.words = words;
-	}
-
-	public Integer getSentences() {
-		return sentences;
-	}
-
-	public void setSentences(Integer sentences) {
-		this.sentences = sentences;
-	}
-
-	public Integer getSyllables() {
-		return syllables;
-	}
-
-	public void setSyllables(Integer syllables) {
-		this.syllables = syllables;
-	}
-
-	public Integer getComplexwords() {
-		return complexwords;
-	}
-
-	public void setComplexwords(Integer complexwords) {
-		this.complexwords = complexwords;
-	}
-
-	public Double getARI() {
-		return this.ari;
-	}
-
-	public void setARI(Double ari) {
-		this.ari = ari;
-	}
-
-	public Double getColemanLiau() {
-		return colemanliau;
-	}
-
-	public void setColemanLiau(Double colemanLiau) {
-		this.colemanliau = colemanLiau;
-	}
-
-	public Double getFleschKincaid() {
-		return fleschkincaid;
-	}
-
-	public void setFleschKincaid(Double fleschKincaid) {
-		this.fleschkincaid = fleschKincaid;
-	}
-
-	public Double getFleschReading() {
-		return fleschreading;
-	}
-
-	public void setFleschReading(Double fleschReading) {
-		fleschreading = fleschReading;
-	}
-
-	public Double getGunningFog() {
-		return gunningfog;
-	}
-
-	public void setGunningFog(Double gunningFog) {
-		this.gunningfog = gunningFog;
-	}
-
-	public Double getSMOG() {
-		return smog;
-	}
-
-	public void setSMOG(Double smog) {
-		this.smog = smog;
-	}
-
-	public Double getSMOGIndex() {
-		return smogindex;
-	}
-
-	public void setSMOGIndex(Double smogindex) {
-		this.smogindex = smogindex;
-	}
-
-	public Long getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
-	}
 }
