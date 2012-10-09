@@ -61,8 +61,8 @@ public class WebServiceTest {
 	
 	
 	@Test
-	public void postget() {
-/*
+	public void testPostGET() {
+
 		System.out.println("Readability, POST, then GET test ....");
 		System.out.println("Text: "+Texts.longText +"\n");
 		Client client = Client.create();
@@ -97,8 +97,7 @@ public class WebServiceTest {
 	  System.out.println("GET Output from Server .... ");
 		System.out.println(output);
 	 	
-		assertTrue(output.equals(Texts.longText));
-	*/ 	
+		assertTrue(output.equals(Texts.longText));	
 	}
 	
 	@Test
