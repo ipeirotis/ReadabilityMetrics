@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
-filesCopiedToWebInfLib=appengine-api-labs.jar|appengine-endpoints.jar|appengine-jsr107cache-1.7.1.jar|jsr107cache-1.1.jar|appengine-api-1.0-sdk-1.7.1.jar|datanucleus-appengine-1.0.10.final.jar|datanucleus-core-1.1.5.jar|datanucleus-jpa-1.1.5.jar|geronimo-jpa_3.0_spec-1.1.1.jar|geronimo-jta_1.1_spec-1.1.1.jar|jdo2-api-2.3-eb.jar
+filesCopiedToWebInfLib=appengine-api-labs.jar|appengine-endpoints.jar|appengine-jsr107cache-1.7.2.1.jar|jsr107cache-1.1.jar|appengine-api-1.0-sdk-1.7.2.1.jar|asm-4.0.jar|datanucleus-api-jdo-3.1.0-m3.jar|datanucleus-api-jpa-3.1.0-m3.jar|datanucleus-appengine-2.1.0-final.jar|datanucleus-core-3.1.0-m5.jar|geronimo-jpa_2.0_spec-1.0.jar|jdo-api-3.0.1.jar|jta-1.1.jar
+gaeDatanucleusVersion=v2
 gaeDeployDialogSettings=
 gaeHrdEnabled=true
 gaeIsEclipseDefaultInstPath=true

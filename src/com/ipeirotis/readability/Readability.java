@@ -28,7 +28,7 @@ public class Readability {
 			case SMOG: 
 				return getSMOG();
 			case FLESCH_READING: 
-				return getFleschKincaidGradeLevel();
+				return getFleschReadingEase();
 			case FLESCH_KINCAID: 
 				return getFleschKincaidGradeLevel(); 
 			case ARI: 

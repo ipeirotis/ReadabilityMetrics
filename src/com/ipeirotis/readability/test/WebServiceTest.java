@@ -1,5 +1,6 @@
 package com.ipeirotis.readability.test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import javax.ws.rs.core.MediaType;
@@ -16,6 +17,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 public class WebServiceTest {
 
 	private static final String base = "http://ipeirotis.appspot.com/readability";
+	//private static final String base = "http://localhost:8888/readability";
 	
 	@Test
 	public void test() {
@@ -57,11 +59,53 @@ public class WebServiceTest {
 	 	
 	}
 	
+	
+	@Test
+	public void postget() {
+/*
+		System.out.println("Readability, POST, then GET test ....");
+		System.out.println("Text: "+Texts.longText +"\n");
+		Client client = Client.create();
+		
+		WebResource webResource = client.resource(base + "/text");
+		MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+	  queryParams.add("message", Texts.longText);
+	 	ClientResponse response = webResource
+	 			.queryParams(queryParams)
+	 			.post(ClientResponse.class, Texts.longText);
+		
+	 	if (response.getStatus() != 200) {
+		   fail("Failed : POST HTTP error code : " + response.getStatus() +"\n" + response.getEntity(String.class));
+		}
+	 	
+	 	String output = response.getEntity(String.class);
+	  System.out.println("POST Output from Server .... ");
+		System.out.println(output);
+		
+		Integer id = Integer.parseInt(output);
+		queryParams = new MultivaluedMapImpl();
+		queryParams.add("id", id.toString());
+		response = webResource
+	 			.queryParams(queryParams)
+	 			.get(ClientResponse.class);
+		
+	 	if (response.getStatus() != 200) {
+		   fail("Failed : GET HTTP error code : " + response.getStatus() +"\n" + response.getEntity(String.class));
+		}
+	 	
+	 	output = response.getEntity(String.class);
+	  System.out.println("GET Output from Server .... ");
+		System.out.println(output);
+	 	
+		assertTrue(output.equals(Texts.longText));
+	*/ 	
+	}
+	
 	@Test
 	public void testPOST() {
 
-		System.out.println("Readability, POST .... \n");
-		System.out.println("Text: "+Texts.longText);
+		System.out.println("Readability, POST ....");
+		System.out.println("Text: "+Texts.longText +"\n");
 		Client client = Client.create();
 		
 		WebResource webResource = client.resource(base + "/text");
@@ -78,7 +122,10 @@ public class WebServiceTest {
 	 	String output = response.getEntity(String.class);
 	  System.out.println("Output from Server .... ");
 		System.out.println(output);
+		
+		
 	 	
 	}
+
 
 }

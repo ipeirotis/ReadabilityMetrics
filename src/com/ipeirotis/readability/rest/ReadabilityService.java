@@ -2,7 +2,6 @@ package com.ipeirotis.readability.rest;
 
 import java.util.Date;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -11,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -87,14 +87,15 @@ public class ReadabilityService {
 	 * @return key as long.
 	 */
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("text")
-	public Response createText(@FormParam("message") Text text) {
+	public Response createText(@QueryParam("message") String text) {
 
 		DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
 		Entity textEntry = new Entity(TextEntry.TEXT_STORE);
-		textEntry.setProperty(TextEntry.TEXT_STORE_TEXT, text);
+		Text txt = new Text(text);
+		
+		textEntry.setProperty(TextEntry.TEXT_STORE_TEXT, txt);
 		textEntry.setProperty(TextEntry.TEXT_STORE_TIMESTAMP, System.currentTimeMillis());
 		Key key = dataStore.put(textEntry);
 		String id = String.valueOf(key.getId());
