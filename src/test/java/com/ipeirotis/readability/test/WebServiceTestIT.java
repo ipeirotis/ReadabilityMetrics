@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.sun.jersey.api.client.Client;
@@ -14,10 +15,10 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 
-public class WebServiceTest {
+public class WebServiceTestIT {
 
-	private static final String base = "http://ipeirotis.appspot.com/readability";
-	//private static final String base = "http://localhost:8888/readability";
+	//private static final String base = "http://ipeirotis.appspot.com/readability";
+	private static final String base = "http://localhost:8080/readability";
 	
 	@Test
 	public void test() {
@@ -61,6 +62,7 @@ public class WebServiceTest {
 	
 	
 	@Test
+	@Ignore
 	public void testPostGET() {
 
 		System.out.println("Readability, POST, then GET test ....");

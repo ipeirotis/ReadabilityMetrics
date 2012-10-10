@@ -9,6 +9,13 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.kindleit</groupId>
+			<artifactId>gae-runtime</artifactId>
+			<version>1.6.6</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
@@ -30,16 +37,23 @@
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>1.7.2.1</version>
-			<scope>provided</scope>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>1.6.6</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
-			<version>1.7.2.1</version>
-			<scope>provided</scope>
+			<version>1.6.6</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-testing</artifactId>
+			<version>1.6.6</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -101,10 +115,26 @@
 					<dependency>
 						<groupId>net.kindleit</groupId>
 						<artifactId>gae-runtime</artifactId>
-						<version>1.7.2</version>
+						<version>1.6.6</version>
 						<type>pom</type>
 					</dependency>
 				</dependencies>
+				<executions>
+					<execution>
+						<id>start-integration-test</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-integration-test</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -114,6 +144,19 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.12.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
