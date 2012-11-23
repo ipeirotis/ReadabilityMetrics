@@ -9,8 +9,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gae.home>C:\Program Files\eclipse\plugins\com.google.appengine.eclipse.sdkbundle_1.7.2.1\appengine-java-sdk-1.7.2.1</gae.home>
 	</properties>
-
+ 
 	<modules>
 		<module>readability-metrics-core</module>
 		<module>readability-metrics-webapp</module>
@@ -40,6 +41,19 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-		</plugins>
+			
+            <plugin>
+                <groupId>net.kindleit</groupId>
+                <artifactId>maven-gae-plugin</artifactId>
+                <version>[plugin version]</version>
+                <configuration>
+                    <serverId>appengine.google.com</serverId>
+                    <sdkDir>${gae.home}</sdkDir>
+
+                </configuration>
+            </plugin>
+        </plugins>
+			
+
 	</build>
 </project>
