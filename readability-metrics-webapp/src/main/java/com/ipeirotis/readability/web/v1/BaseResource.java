@@ -26,6 +26,11 @@ abstract class BaseResource {
 	@Autowired
 	UserService userService;
 	
+	/**
+	 * Retrieves or creates (if supplied) the User Entity
+	 * 
+	 * @return User object
+	 */
 	Key<User> getOwner() {
 		if (null == user)
 			return null;

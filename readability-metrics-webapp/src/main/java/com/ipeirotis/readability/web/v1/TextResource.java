@@ -27,6 +27,12 @@ import com.ipeirotis.readability.service.ReadabilityService;
 import com.ipeirotis.readability.service.TextMetricService;
 import com.ipeirotis.readability.service.TextService;
 
+/**
+ * Represents the Text Manipulation Resource
+ * 
+ * @author aldrin
+ * 
+ */
 @Component
 @Scope("request")
 @Produces(MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +46,12 @@ public class TextResource extends BaseResource {
 
 	@Autowired
 	ReadabilityService readabilityService;
-	
+
+	/**
+	 * Handler needed for CORS support
+	 * 
+	 * @return CORS Response
+	 */
 	@OPTIONS
 	@Path(".*")
 	public Response getOptionsForUpdateText() throws Exception {
@@ -53,6 +64,13 @@ public class TextResource extends BaseResource {
 				.build();
 	}
 
+	/**
+	 * Updates (read: stores) a Text
+	 * 
+	 * @param contents
+	 *            Body Context (Form Method)
+	 * @return Created Text Object
+	 */
 	@POST
 	public Text updateText(String contents) throws Exception {
 		@SuppressWarnings("unused")
@@ -61,7 +79,7 @@ public class TextResource extends BaseResource {
 		if (contents.startsWith("body=")) {
 			contents = contents.substring("body=".length());
 		}
-		
+
 		t = new Text(user, contents);
 
 		if (null == (o = textService.findFirstByPrimaryKey(t.getId()))) {
@@ -72,6 +90,14 @@ public class TextResource extends BaseResource {
 		return t;
 	}
 
+	/**
+	 * Given an Id, returns the Text
+	 * 
+	 * @param id
+	 *            id, in the form &lt;userid&gt:&lt;sha1hash&gt;
+	 * 
+	 * @return Text Object
+	 */
 	@Path("/{id : [^/]+}")
 	@GET
 	public Text findById(@PathParam("id") String id) throws Exception {
@@ -83,6 +109,13 @@ public class TextResource extends BaseResource {
 		return t;
 	}
 
+	/**
+	 * Returns the text metrics for given id
+	 * 
+	 * @param id
+	 *            id, in the form &lt;userid&gt:&lt;sha1hash&gt;
+	 * @return Json Array of Object Id + Metrics
+	 */
 	@Path("/{id : [^/]+}/metrics")
 	@GET
 	public Map<String, Object> findMetricsById(@PathParam("id") String id)
@@ -103,6 +136,15 @@ public class TextResource extends BaseResource {
 		return result;
 	}
 
+	/**
+	 * Returns a Named Metric
+	 * 
+	 * @param id
+	 *            id, in the form &lt;userid&gt:&lt;sha1hash&gt;
+	 * @param metricType
+	 *            metric type (ARI, CHARACTERS, SYLLABLES, ...)
+	 * @return Named Metric (just like the example in findMetricsById
+	 */
 	@Path("/{id : [^/]+}/metrics/{metricType : \\w+}")
 	@GET
 	public Map<String, Object> findNamedMetricsById(@PathParam("id") String id,
@@ -114,7 +156,8 @@ public class TextResource extends BaseResource {
 
 		Map<String, BigDecimal> metrics = new LinkedHashMap<String, BigDecimal>();
 
-		TextMetric m = textMetricService.findFirstByPrimaryKey(String.format("%s:%s", t.getId(), metricType));
+		TextMetric m = textMetricService.findFirstByPrimaryKey(String.format(
+				"%s:%s", t.getId(), metricType));
 
 		metrics.put(m.getMetricType(), m.getValue());
 
@@ -123,6 +166,13 @@ public class TextResource extends BaseResource {
 		return result;
 	}
 
+	/**
+	 * Deletes a Text
+	 * 
+	 * @param id
+	 *            id, in the form &lt;userid&gt:&lt;sha1hash&gt;
+	 * @return Text Data, prior to removal
+	 */
 	@Path("/{id : [^/]+}")
 	@DELETE
 	public Text deleteById(@PathParam("id") String id) throws Exception {
@@ -136,6 +186,11 @@ public class TextResource extends BaseResource {
 		return t;
 	}
 
+	/**
+	 * Returns all texts which belongs to this user
+	 * 
+	 * @return array of Text Objects
+	 */
 	@GET
 	public Collection<Text> findAll() {
 		return Lists.newArrayList(textService.findAllByParentKey(user.getId()));
