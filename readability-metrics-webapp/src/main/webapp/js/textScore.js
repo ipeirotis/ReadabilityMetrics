@@ -15,7 +15,11 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child,
 
 ReadabilityMetrics = (function() {
 	function ReadabilityMetrics() {
-		
+		$.ajaxSetup({
+			beforeSend: function(xhrObj) {
+				xhrObj.setRequestHeader("x-mashape-user-publickey", "mjc4c5cjumzfi2jspakkw4zbymljqe");
+			}
+		});
 	}
 	
 	ReadabilityMetrics.prototype.submit_text = function(body, callback) {
