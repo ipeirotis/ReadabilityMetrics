@@ -48,7 +48,7 @@
         <parameters>
             <parameter type="string" optional="false" name="id">
                 <description>Text Id</description>
-                <example>o8m0zyetzixyml6g8buhv8vydpag3i:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</example>
+                <example>6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</example>
             </parameter>
         </parameters>
         <response type="List[Get Text Metrics Model]"/>
@@ -58,8 +58,8 @@
         <description>See https://github.com/ipeirotis/ReadabilityMetrics/wiki/REST-API:-Managing-Texts</description>
         <parameters>
             <parameter type="string" optional="false" name="id">
-                <description>SHA-256 Hex Hash of Content (Lowercase)</description>
-                <example>2c7c3d5f244f1a40069a32224215e0cf9b42485c99d80f357d76f006359c7a18</example>
+                <description>[&lt;user id&gt;]:&lt;SHA-256 Hex Hash of Content (Lowercase)&gt;</description>
+                <example>6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</example>
             </parameter>
         </parameters>
         <response type="Text"/>
@@ -134,33 +134,44 @@
     <model name="Get Text Metrics Model">
         <description>See https://github.com/ipeirotis/ReadabilityMetrics/wiki/REST-API:-Retrieving-Text-Metrics</description>
         <example>{
-  &quot;id&quot;: &quot;o8m0zyetzixyml6g8buhv8vydpag3i:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc&quot;,
+  &quot;id&quot;: &quot;ario2xuy3etyrk800v57icsivs2cnr:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc&quot;,
   &quot;metrics&quot;: {
-    &quot;ARI&quot;: 39.201
+    &quot;ARI&quot;: 39.201,
+    &quot;CHARACTERS&quot;: 374,
+    &quot;COLEMAN_LIAU&quot;: 14.376,
+    &quot;COMPLEXWORDS&quot;: 19,
+    &quot;FLESCH_KINCAID&quot;: 36.48,
+    &quot;FLESCH_READING&quot;: -36.46,
+    &quot;GUNNING_FOG&quot;: 39.6,
+    &quot;SENTENCES&quot;: 1,
+    &quot;SMOG&quot;: 28.03,
+    &quot;SMOG_INDEX&quot;: 26.875,
+    &quot;SYLLABLES&quot;: 146,
+    &quot;WORDS&quot;: 73
   }
 }</example>
         <fields>
             <simple type="string" optional="false" name="id">
-                <description>o8m0zyetzixyml6g8buhv8vydpag3i:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</description>
+                <description>ario2xuy3etyrk800v57icsivs2cnr:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</description>
             </simple>
         </fields>
     </model>
     <model name="Text">
         <description>Represents a Stored Text</description>
         <example>{
-  &quot;id&quot;: &quot;o8m0zyetzixyml6g8buhv8vydpag3i:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc&quot;,
+  &quot;id&quot;: &quot;ario2xuy3etyrk800v57icsivs2cnr:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc&quot;,
   &quot;content&quot;: &quot;Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipisicing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.+Ut+enim+ad+minim+veniam%2C+quis+nostrud+exercitation+ullamco+laboris+nisi+ut+aliquip+ex+ea+commodo+consequat.+Duis+aute+irure+dolor+in+reprehenderit+in+voluptate+velit+esse+cillum+dolore+eu+fugiat+nulla+pariatur.+Excepteur+sint+occaecat+cupidatat+non+proident%2C+sunt+in+culpa+qui+officia+deserunt+mollit+anim+id+est+laborum.&quot;,
-  &quot;owner&quot;: &quot;o8m0zyetzixyml6g8buhv8vydpag3i&quot;
+  &quot;owner&quot;: &quot;ario2xuy3etyrk800v57icsivs2cnr&quot;
 }</example>
         <fields>
             <simple type="string" optional="false" name="content">
-                <description>Lorem+ipsum+dolor+sit+amet%2C+consectetur+adipisicing+elit%2C+sed+do+eiusmod+tempor+incididunt+ut+labore+et+dolore+magna+aliqua.+Ut+enim+ad+minim+veniam%2C+quis+nostrud+exercitation+ullamco+laboris+nisi+ut+aliquip+ex+ea+commodo+consequat.+Duis+aute+irure+dolor+in+reprehenderit+in+voluptate+velit+esse+cillum+dolore+eu+fugiat+nulla+pariatur.+Excepteur+sint+occaecat+cupidatat+non+proident%2C+sunt+in+culpa+qui+officia+deserunt+mollit+anim+id+est+laborum.</description>
+                <description>Content of Text</description>
             </simple>
             <simple type="string" optional="false" name="id">
-                <description>o8m0zyetzixyml6g8buhv8vydpag3i:6e048c8dceff8f5591829c39900504e83e6b9179a092a09adb3e5212328c07fc</description>
+                <description>Text Id</description>
             </simple>
             <simple type="string" optional="false" name="owner">
-                <description>o8m0zyetzixyml6g8buhv8vydpag3i</description>
+                <description>Owner (first part of the id)</description>
             </simple>
         </fields>
     </model>

@@ -37,7 +37,7 @@ import com.ipeirotis.readability.service.TextService;
 @Component
 @Scope("request")
 @Produces(MediaType.APPLICATION_JSON_VALUE)
-@Path("/v1/text")
+@Path("/readability/api/v1/text")
 public class TextResource extends BaseResource {
 	@Autowired
 	TextService textService;
