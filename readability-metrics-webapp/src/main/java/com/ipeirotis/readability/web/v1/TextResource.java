@@ -1,6 +1,7 @@
 package com.ipeirotis.readability.web.v1;
 
 import java.math.BigDecimal;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -76,9 +77,11 @@ public class TextResource extends BaseResource {
 		@SuppressWarnings("unused")
 		Text o = null, t = null;
 
-		if (contents.startsWith("body=")) {
-			contents = contents.substring("body=".length());
-		}
+		/*
+		 * In case we're receiving it thru mashape, we need to unescape.
+		 */
+		if (contents.startsWith("body="))
+			contents = URLDecoder.decode(contents.substring("body=".length()), "UTF-8");
 
 		t = new Text(user, contents);
 

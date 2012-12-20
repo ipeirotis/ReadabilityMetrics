@@ -19,7 +19,7 @@ public class TextResourceIT {
 	
 	@Before
 	public void before() throws Exception {
-		basePath = "http://127.0.0.1:8080/api/v1";
+		basePath = "http://127.0.0.1:8080/readability/api/v1";
 		this.requestSpec = new RequestSpecBuilder().addHeader("x-mashape-publickey", MASHAPE_PUBLIC_USER_ID).build();
 	}
 	

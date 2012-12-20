@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("request")
-@Path("/v1")
+@Path("/readability/v1")
 public class V1Resource extends BaseResource {
 	@GET
 	@Produces("text/plain")
