@@ -21,7 +21,7 @@ public class MashapeTextResourceIT {
 
 	@Before
 	public void before() throws Exception {
-		basePath = "https://ipeirotis-readabilitymetrics.p.mashape.com";
+		basePath = "https://ipeirotis-readability-metrics.p.mashape.com";
 
 		this.requestSpec = new RequestSpecBuilder().addHeader(
 				"X-Mashape-Authorization", MASHAPE_AUTH_HEADER_VALUE).build();
