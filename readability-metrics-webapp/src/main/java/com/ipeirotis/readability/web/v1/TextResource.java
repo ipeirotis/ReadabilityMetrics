@@ -101,7 +101,23 @@ public class TextResource extends BaseResource {
 	@Path("/{id : [^/]+}")
 	@GET
 	public Text findById(@PathParam("id") String id) throws Exception {
-		Text t = textService.findFirstByPrimaryKey(id);
+		String lookupId = id;
+
+		/*
+		 * Accepts Partial Id
+		 */
+		if (-1 == lookupId.indexOf(':')) {
+			lookupId = user.getId() + ":" + lookupId;
+		} else {
+			/*
+			 * Otherwise, forces the id to belong to this user
+			 */
+			if (! lookupId.startsWith(user.getId() + ":")) {
+				lookupId = user.getId() + ":" + lookupId.substring(1 + lookupId.indexOf(':'));
+			}
+		}
+
+		Text t = textService.findFirstByPrimaryKey(lookupId);
 
 		if (null == t || (!t.getOwner().equals(user.getId())))
 			throw new WebApplicationException(404);
@@ -176,10 +192,7 @@ public class TextResource extends BaseResource {
 	@Path("/{id : [^/]+}")
 	@DELETE
 	public Text deleteById(@PathParam("id") String id) throws Exception {
-		Text t = textService.findFirstByPrimaryKey(id);
-
-		if (null == t || (t.getOwner() != user.getId()))
-			throw new WebApplicationException(404);
+		Text t = findById(id);
 
 		textService.delete(t);
 

@@ -68,6 +68,17 @@ public class MashapeTextResourceIT {
 				.get("/text/"
 						+ MASHAPE_PUBLIC_USER_ID
 						+ ":2c7c3d5f244f1a40069a32224215e0cf9b42485c99d80f357d76f006359c7a18");
+
+		given().spec(requestSpec)
+		.//
+		expect()
+		.statusCode(200)
+		.body(StringContains
+				.containsString(MASHAPE_PUBLIC_USER_ID
+						+ ":2c7c3d5f244f1a40069a32224215e0cf9b42485c99d80f357d76f006359c7a18"))
+		.when()
+		.get("/text/"
+				+ "2c7c3d5f244f1a40069a32224215e0cf9b42485c99d80f357d76f006359c7a18");
 	}
 
 	@Test

@@ -9,7 +9,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gae.home>C:\Program Files\eclipse\plugins\com.google.appengine.eclipse.sdkbundle_1.7.2.1\appengine-java-sdk-1.7.2.1</gae.home>
 	</properties>
  
 	<modules>
@@ -45,15 +44,12 @@
             <plugin>
                 <groupId>net.kindleit</groupId>
                 <artifactId>maven-gae-plugin</artifactId>
-                <version>[plugin version]</version>
+                <version>0.9.5</version>
                 <configuration>
-                    <serverId>appengine.google.com</serverId>
-                    <sdkDir>${gae.home}</sdkDir>
-
+                	<serverId>appengine.google.com</serverId>
+                	<sdkDir>${gae.home}</sdkDir>
                 </configuration>
             </plugin>
         </plugins>
-			
-
 	</build>
 </project>
