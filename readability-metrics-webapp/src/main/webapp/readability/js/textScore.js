@@ -23,11 +23,11 @@ ReadabilityMetrics = (function() {
 	}
 	
 	ReadabilityMetrics.prototype.submit_text = function(body, callback) {
-		return $.post("/api/v1/text", body, callback, 'json');
+		return $.post("/readability/api/v1/text", body, callback, 'json');
 	};
 	
 	ReadabilityMetrics.prototype.fetch_metrics = function(id, callback) {
-		return $.get("/api/v1/text/" + id + "/metrics", {}, callback, 'json');
+		return $.get("/readability/api/v1/text/" + id + "/metrics", {}, callback, 'json');
 	};
 	
 	return ReadabilityMetrics;
