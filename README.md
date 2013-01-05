@@ -12,4 +12,4 @@ ReadabilityMetrics
 
 ## Using via Mashape
 
-* Please see http://mashape.com/ipeirotis/ReadabilityMetrics
+* Please see http://mashape.com/ipeirotis/readability-metrics/
