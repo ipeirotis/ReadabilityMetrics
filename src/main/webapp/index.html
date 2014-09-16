@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<title>Readability Scores Demo</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+</head>
+<body>
+    <div id="inhalt">
+            <h2>Readability Metrics Demo</h2>
+
+            <table>
+                <tr>
+                    <td rowspan="15">
+                        <textarea id="text" cols="60" rows="13">
+The word logorrhoea is often used pejoratively 
+to describe prose that is highly abstract and 
+contains little concrete language. Since abstract 
+writing is hard to visualize, it often seems as though 
+it makes no sense and all the words are excessive. 
+Writers in academic fields that concern themselves mostly 
+with the abstract, such as philosophy and especially 
+postmodernism, often fail to include extensive concrete 
+examples of their ideas, and so a superficial examination 
+of their work might lead one to believe that it is all nonsense.
+</textarea>
+                        <br/>
+                        <input id="calculate-button" value="Calculate" type="button" />
+                        <img src="/img/loading.gif" id="loading" style="display:none;"/>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sentences</td>
+                    <td><span id="metric-SENTENCES"></span></td>
+                </tr>
+                <tr>
+                    <td>Words</td>
+                    <td><span id="metric-WORDS"></span></td>
+                </tr>
+                <tr>
+                    <td>Characters</td>
+                    <td><span id="metric-CHARACTERS"></span></td>
+                </tr>
+                <tr>
+                    <td>Syllables</td>
+                    <td><span id="metric-SYLLABLES"></span></td>
+                </tr>
+                <tr>
+                    <td>Complex words</td>
+                    <td><span id="metric-COMPLEXWORDS"></span></td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td><a
+                        href="http://en.wikipedia.org/wiki/Automated_Readability_Index">Automated
+                            Readability Index</a></td>
+                    <td><span id="metric-ARI"></span></td>
+                </tr>
+                <tr>
+                    <td><a href="http://en.wikipedia.org/wiki/SMOG">SMOG</a></td>
+                    <td><span id="metric-SMOG"></span></td>
+                </tr>
+                <tr>
+                    <td><a href="http://en.wikipedia.org/wiki/SMOG">SMOG Index</a></td>
+                    <td><span id="metric-SMOG_INDEX"></span></td>
+                </tr>
+                <tr>
+                    <td><a
+                        href="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_Grade_Level#Flesch.E2.80.93Kincaid_Grade_Level">Flesch–Kincaid Grade Level</a></td>
+                    <td><span id="metric-FLESCH_KINCAID"></span></td>
+                </tr>
+                <tr>
+                    <td><a
+                        href="http://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_test#Flesch_Reading_Ease">Flesch Reading Ease</a></td>
+                    <td><span id="metric-FLESCH_READING"></span></td>
+                </tr>
+                <tr>
+                    <td><a href="http://en.wikipedia.org/wiki/Coleman-Liau_Index">Coleman-Liau
+                            Index</a></td>
+                    <td><span id="metric-COLEMAN_LIAU"></span></td>
+                </tr>
+                <tr>
+                    <td><a href="http://en.wikipedia.org/wiki/Gunning-Fog_Index">Gunning-Fog
+                            Index</a></td>
+                    <td><span id="metric-GUNNING_FOG"></span></td>
+                </tr>
+            </table>
+            <p>
+                For any bug reports or feature requests, contact <a
+                    href="http://www.stern.nyu.edu/~panos">Panos Ipeirotis</a>.<br>
+                The code is available at <a
+                    href="https://github.com/ipeirotis/ReadabilityMetrics">Github</a>.<br>
+            </p>
+    </div>
+
+    <script type="text/javascript"
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            ReadabilityMetricsModule.init();
+        });
+    </script>
+</body>
+</html>
