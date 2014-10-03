@@ -16,8 +16,7 @@ var ReadabilityMetricsModule = (function() {
 
             $.ajax({
                 type: 'POST',
-                url: self.getApiUrl(),
-                data: JSON.stringify({text:text}),
+                url: self.getApiUrl() + '?text=' + encodeURIComponent(text),
                 contentType: "application/json",
                 dataType: 'json'
             }).done(function(metrics) {
