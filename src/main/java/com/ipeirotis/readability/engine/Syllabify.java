@@ -1,12 +1,10 @@
 package com.ipeirotis.readability.engine;
 
-/*
- * Created on Jun 5, 2007
- *
- */
+import java.util.regex.Pattern;
 
 /**
  * @author Panos Ipeirotis
+ * @author Steve Ash
  * 
  *         Java Code to estimate the number of syllables in a word.
  * 
@@ -16,58 +14,85 @@ package com.ipeirotis.readability.engine;
  *         For documentation and comments
  *         http://search.cpan.org/src/GREGFAST/Lingua
  *         -EN-Syllable-0.251/Syllable.pm
+ *         
+ * 2017-01-15 updated to EN-Syllable-0.30 and fixed regex issue
  * 
  */
 public class Syllabify {
 
-	static String[] SubSyl = { "cial", "tia", "cius", "cious", "giu", "ion", "iou", "sia$", ".ely$" };
+  private static final Pattern VOWELS = Pattern.compile("[^aeiouy]+");
 
-	static String[] AddSyl = { "ia", "riet", "dien", "iu", "io", "ii", "[aeiouym]bl$", "[aeiou]{3}", "^mc", "ism$",
-			"[^aeiouy][^aeiouy]l$", "[^l]lien", "^coa[dglx].", "[^gq]ua[^auieo]", "dnt$" };
+  private static final String[] staticSubMatches = {"cial", "tia", "cius", "cious", "giu", "ion", "iou"};
+  private static final Pattern[] regexSubMatches = {
+      Pattern.compile(".*sia$"),
+      Pattern.compile(".*.ely$"),
+      Pattern.compile(".*[^td]ed$")
+  };
 
-	public static int syllable(String word) {
+  private static final String[] staticAddMatches = {"ia", "riet", "dien", "iu", "io", "ii", "microor"};
+  private static final Pattern[] regexAddMatches = {
+      Pattern.compile(".*[aeiouym]bl$"),
+      Pattern.compile(".*[aeiou]{3}.*"),
+      Pattern.compile("^mc.*"),
+      Pattern.compile(".*ism$"),
+      Pattern.compile(".*isms$"),
+      Pattern.compile(".*([^aeiouy])\\1l$"),
+      Pattern.compile(".*[^l]lien.*"),
+      Pattern.compile("^coa[dglx]..*"),
+      Pattern.compile(".*[^gq]ua[^auieo].*"),
+      Pattern.compile(".*dnt$")
+  };
 
-		word = word.toLowerCase();
-		word = word.replaceAll("'", " ");
+  public static int syllable(String word) {
 
-		if (word.equals("i"))
-			return 1;
-		if (word.equals("a"))
-			return 1;
+    word = word.toLowerCase();
+    if (word.equals("w")) {
+      return 2;
+    }
+    if (word.length() == 1) {
+      return 1;
+    }
+    word = word.replaceAll("'", " ");
 
-		if (word.endsWith("e")) {
-			word = word.substring(0, word.length() - 1);
-		}
+    if (word.endsWith("e")) {
+      word = word.substring(0, word.length() - 1);
+    }
 
-		String[] phonems = word.split("[^aeiouy]+");
+    String[] phonems = VOWELS.split(word);
 
-		int syl = 0;
-		for (int i = 0; i < SubSyl.length; i++) {
-			String syllabe = SubSyl[i];
-			if (word.matches(syllabe)) {
-				syl--;
-			}
-		}
-		for (int i = 0; i < AddSyl.length; i++) {
-			String syllabe = AddSyl[i];
-			if (word.matches(syllabe)) {
-				syl++;
-			}
-		}
-		if (word.length() == 1) {
-			syl++;
-		}
+    int syl = 0;
+    for (int i = 0; i < staticSubMatches.length; i++) {
+      if (word.contains(staticSubMatches[i])) {
+        syl -= 1;
+      }
+    }
+    for (int i = 0; i < regexSubMatches.length; i++) {
+      if (regexSubMatches[i].matcher(word).matches()) {
+        syl -= 1;
+      }
+    }
+    for (int i = 0; i < staticAddMatches.length; i++) {
+      if (word.contains(staticAddMatches[i])) {
+        syl += 1;
+      }
+    }
+    for (int i = 0; i < regexAddMatches.length; i++) {
+      if (regexAddMatches[i].matcher(word).matches()) {
+        syl += 1;
+      }
+    }
 
-		for (int i = 0; i < phonems.length; i++) {
-			if (phonems[i].length() > 0)
-				syl++;
-		}
+    for (int i = 0; i < phonems.length; i++) {
+      if (phonems[i].length() > 0) {
+        syl++;
+      }
+    }
 
-		if (syl == 0) {
-			syl = 1;
-		}
+    if (syl == 0) {
+      syl = 1;
+    }
 
-		return syl;
-	}
+    return syl;
+  }
 
 }
