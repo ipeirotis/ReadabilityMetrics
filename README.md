@@ -10,6 +10,6 @@ ReadabilityMetrics
 
 * Well, you can see [the wiki](https://github.com/ipeirotis/ReadabilityMetrics/wiki)
 
-## Using via Mashape
+## Test and it use via Mashape
 
-* Please see http://mashape.com/ipeirotis/readability-metrics/
+* Please see https://market.mashape.com/ipeirotis/readability-metrics
