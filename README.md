@@ -3,7 +3,7 @@ ReadabilityMetrics
 
 ## Don't make me think
 
-* <s>See an [online demo](http://ipeirotis.appspot.com/readability/client.html)</s> (temporarily down)
+* See an [online demo](https://ipeirotis-hrd.appspot.com/)
 
 ## What is it about?
 
