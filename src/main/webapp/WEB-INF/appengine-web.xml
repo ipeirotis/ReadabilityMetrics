@@ -6,6 +6,7 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
-    
+
+    <runtime>java8</runtime>
     <sessions-enabled>false</sessions-enabled>
 </appengine-web-app>

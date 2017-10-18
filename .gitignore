@@ -2,3 +2,10 @@
 .settings
 .classpath
 target
+.idea/
+
+*.iml
+*.ipr
+*.iws
+*.launch
+*.log
